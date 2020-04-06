@@ -3,33 +3,63 @@ import csv
 import re
 import lxml.html
 from bs4 import BeautifulSoup
-TOTALPAGE =532
+f1  = open("Furniture_and_Accessories_new_delhi7.csv", 'w')
 
-f1  = open("Furni.csv", 'w')
+
 writer = csv.writer(f1)
+
+
+
 writer.writerow([
+
 "company name",
 "mobile no",
 "website link",
 "state and city",
 "email",
-"phone"
 ])
 
-def write_row(title,mobile,website,address_city,email,phone):
+
+
+def write_row(title,mobile,website,address_city,email):
     csv_row = []
     csv_row.append(" ".join(title))
     csv_row.append(" ".join(mobile))
-    csv_row.append(" ".join(website)) 
+    csv_row.append(website) 
     csv_row.append(" ".join(address_city))
-    csv_row.append(" ".join(email))
-    csv_row.append(" ".join(phone))
+    csv_row.append(email)
+    # csv_row.append(category)
+    # try:
+        
+    # except:
+    #     csv_row.append("")
+
+    # try:
+        
+    # except:
+    #     csv_row.append("")   
+
+    # try:
+        
+    # except:
+    #     csv_row.append("") 
+
+    # try:
+        
+    # except:
+    #     csv_row.append("")  
+    # try:
+        
+    # except:
+    #     csv_row.append("")  
     writer.writerow(csv_row)
 
-pages = int(TOTALPAGE/15)
-k = 0
+
+
+
+k =210
 count = 0
-for i in range(0,(pages+1)):
+for i in range(0,532):
     
     html = requests.get('https://www.houzz.in/professionals/searchDirectory?topicId=26728&query=Furniture+%26amp%3B+Accessories&location=Delhi%2C+India&distance=100&sort=4&p='+str(k))
     doc = lxml.html.fromstring(html.content)
@@ -38,7 +68,8 @@ for i in range(0,(pages+1)):
     check = doc.xpath('//span[@itemprop="name"]/text()')
     total = count
     k  = k + 15
-
+    print(k)
+    print(new_pro,link)
     for j in link:
         count = count + 1
         inside_link =requests.get(j)
@@ -48,15 +79,29 @@ for i in range(0,(pages+1)):
         website = doc1.xpath('//a[@data-compid="Profile_Website"]/@href')
         address = doc1.xpath('//div[@class="profile-meta__val"]/text()')
         address_city = doc1.xpath('//div[@class="hz-profile-header__location"]/text()')
-        email  = doc1.xpath('//span[@class="profile-meta__block hidden"]/text()')
-        email_found = re.findall(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,4}',str(email))
-        phone = re.findall('\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4}',str(email))
-        print("this is email",email)
-        print(title,mobile,website,address_city,email_found,phone)
-        write_row(title,mobile,website,address_city,email_found,phone)
-        print("page number in process",i)
-        print("paginator number",k)
+        email = doc1.xpath('//div[@class="profile-meta__content text-s"]')
+        category = doc1.xpath('//div[@class="profile-meta__content text-s"]')
+        categ =  doc1.xpath('//span[@claas="profile-meta__block"]/@text')
 
+
+        pin = doc1.xpath('//div[@class="profile-meta__val"]/text()')
+        # for  p in pin:
+        #     pin2 = p.xpath('//span/text()')
+        #     print("this is pin2 ",pin2)
+            
+        print("this is",categ)
+        for mail in email:
+            catego =   mail.xpath('//span[@claas="profile-meta__block"]/text()')
+            print("this is cat",catego)
+            
+
+
+
+
+
+        # print(title,mobile,website,address_city,email)
+        write_row(title,mobile,website,address_city,email)
+        print("count",i,k)
         
 
 

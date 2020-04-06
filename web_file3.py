@@ -3,10 +3,12 @@ import csv
 import re
 import lxml.html
 from bs4 import BeautifulSoup
-TOTALPAGE =532
+import re
+f1  = open("Furniture_and_Accessories4.csv", 'w')
 
-f1  = open("Furni.csv", 'w')
+
 writer = csv.writer(f1)
+
 writer.writerow([
 "company name",
 "mobile no",
@@ -16,29 +18,32 @@ writer.writerow([
 "phone"
 ])
 
+
+
 def write_row(title,mobile,website,address_city,email,phone):
     csv_row = []
-    csv_row.append(" ".join(title))
-    csv_row.append(" ".join(mobile))
-    csv_row.append(" ".join(website)) 
-    csv_row.append(" ".join(address_city))
-    csv_row.append(" ".join(email))
-    csv_row.append(" ".join(phone))
+    csv_row.append(title)
+    csv_row.append(mobile)
+    csv_row.append(website) 
+    csv_row.append(address_city)
+    csv_row.append(email)
+    csv_row.append(email_found)
+    csv_row.append(phone)
     writer.writerow(csv_row)
 
-pages = int(TOTALPAGE/15)
-k = 0
+
+
+
+
+k =0
 count = 0
-for i in range(0,(pages+1)):
-    
+for i in range(0,4635):
     html = requests.get('https://www.houzz.in/professionals/searchDirectory?topicId=26728&query=Furniture+%26amp%3B+Accessories&location=Delhi%2C+India&distance=100&sort=4&p='+str(k))
     doc = lxml.html.fromstring(html.content)
     new_pro = doc.xpath('//span[@itemprop="name"]/text()')
-    link = doc.xpath('//a[@itemprop="url"]/@href')
-    check = doc.xpath('//span[@itemprop="name"]/text()')
+    link = doc.xpath('//a[@class="pro-card-carousel__slide"]/@href')
     total = count
     k  = k + 15
-
     for j in link:
         count = count + 1
         inside_link =requests.get(j)
@@ -48,15 +53,19 @@ for i in range(0,(pages+1)):
         website = doc1.xpath('//a[@data-compid="Profile_Website"]/@href')
         address = doc1.xpath('//div[@class="profile-meta__val"]/text()')
         address_city = doc1.xpath('//div[@class="hz-profile-header__location"]/text()')
+
         email  = doc1.xpath('//span[@class="profile-meta__block hidden"]/text()')
-        email_found = re.findall(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,4}',str(email))
-        phone = re.findall('\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4}',str(email))
-        print("this is email",email)
+        email_found = re.findall(r'\w+@\w+',str(email))
+        phone = re.findall(r'\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4}',str(email))
+        
+
+
+
+
+
         print(title,mobile,website,address_city,email_found,phone)
         write_row(title,mobile,website,address_city,email_found,phone)
-        print("page number in process",i)
-        print("paginator number",k)
-
+        print("count",i)
         
 
 
