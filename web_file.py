@@ -3,7 +3,7 @@ import csv
 import re
 import lxml.html
 from bs4 import BeautifulSoup
-TOTALPAGE =532
+TOTALPAGE =735
 
 f1  = open("Furniture_and_Accessories_new_delhi.csv", 'w')
 writer = csv.writer(f1)
@@ -31,7 +31,7 @@ k = 0
 count = 0
 for i in range(0,(pages+1)):
     
-    html = requests.get('https://www.houzz.in/professionals/searchDirectory?topicId=26728&query=Furniture+%26amp%3B+Accessories&location=Delhi%2C+India&distance=100&sort=4&p='+str(k))
+    html = requests.get('https://www.houzz.in/professionals/searchDirectory?topicId=26728&query=Furniture+%26amp%3B+Accessories&location=india&distance=100&sort=4&p='+str(k))
     doc = lxml.html.fromstring(html.content)
     new_pro = doc.xpath('//span[@itemprop="name"]/text()')
     link = doc.xpath('//a[@itemprop="url"]/@href')
@@ -56,6 +56,7 @@ for i in range(0,(pages+1)):
         write_row(title,mobile,website,address_city,email_found,phone)
         print("page number in process",i)
         print("paginator number",k)
+        print("total pages",pages)
 
         
 
