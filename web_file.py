@@ -5,7 +5,7 @@ import lxml.html
 from bs4 import BeautifulSoup
 TOTALPAGE =532
 
-f1  = open("Furni.csv", 'w')
+f1  = open("Furniture_and_Accessories_new_delhi.csv", 'w')
 writer = csv.writer(f1)
 writer.writerow([
 "company name",
