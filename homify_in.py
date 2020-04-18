@@ -14,10 +14,14 @@ writer.writerow([
 "Website link",
 "State and City",
 "Email",
-"Address"
+"Address",
+"Twitter",
+"Facebook",
+"Linked In",
+"Instagram"
 ])
 
-def write_row(title,category,mobile,website,address,city_state):
+def write_row(title,category,mobile,website,address,city_state,twitter,facebook,linkedin,insta):
     csv_row = []
     csv_row.append(" ".join(title))
     csv_row.append(" ".join(category))
@@ -26,6 +30,13 @@ def write_row(title,category,mobile,website,address,city_state):
     csv_row.append(" ".join(city_state))
     csv_row.append(" ")
     csv_row.append(" ".join(address))
+    csv_row.append("".join(twitter))
+    csv_row.append("".join(facebook))
+    csv_row.append("".join(linkedin))
+    csv_row.append("".join(insta))
+    
+    
+
     writer.writerow(csv_row)
 
 
@@ -48,8 +59,14 @@ for i in range(0,(pages+1)):
         address = doc1.xpath('//dd[@class="key-value--value"]/text()')
         city_state = doc1.xpath('//a[@class="category-city--city -themed-"]/text()')
         website = doc1.xpath('//a[@class="external-link"]/text()')
-        write_row(title,category,mobile,website,address,city_state)
-        print(title,category,mobile,website,address,city_state)
+        twitter  = doc1.xpath('//a[@class="social-follow-links--twitter"]/@href')
+        facebook  = doc1.xpath('//a[@class="social-follow-links--facebook"]/@href')
+        linkedin  = doc1.xpath('//a[@class="social-follow-links--linkedin"]/@href')
+        insta  = doc1.xpath('//a[@class="social-follow-links--instagram"]/@href')
+        
+        
+        write_row(title,category,mobile,website,address,city_state,twitter,facebook,linkedin,insta)
+        print(title,category,mobile,website,address,city_state,twitter,facebook,linkedin,insta)
 
         
         
